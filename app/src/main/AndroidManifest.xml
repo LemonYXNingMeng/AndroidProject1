@@ -13,9 +13,9 @@
         android:theme="@style/Theme.MyAPP"
         tools:targetApi="31">
         <activity
-            android:name=".chat_item.xml"
+            android:name=".people_chat_item.xml"
             android:exported="false"
-            android:label="@string/title_activity_chat_item.xml"
+            android:label="@string/title_activity_people_chat_item.xml"
             android:theme="@style/Theme.MyAPP" />
         <activity
             android:name=".MenuActivity"

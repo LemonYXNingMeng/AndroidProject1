@@ -23,3 +23,6 @@
         android:label="@string/title_moments"
         tools:layout="@layout/fragment_moments" />
 </navigation>
+
+
+

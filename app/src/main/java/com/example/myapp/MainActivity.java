@@ -23,10 +23,9 @@ public class MainActivity extends AppCompatActivity {
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(MainActivity.this,MenuActivity.class);
                 // 设置启动标志,避免退回登录界面
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setClass(MainActivity.this,MenuActivity.class);
                 startActivity(intent);
             }
         });

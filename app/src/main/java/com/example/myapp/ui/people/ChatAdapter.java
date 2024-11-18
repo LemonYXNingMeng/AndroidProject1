@@ -1,4 +1,4 @@
-package com.example.myapp.adapt;
+package com.example.myapp.ui.people;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapp.R;
 import com.example.myapp.vo.ChatItem;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.people_chat_item, parent, false);
         return new ChatViewHolder(view);
     }
 
@@ -49,7 +50,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
     }
 }
-
 
 
 

@@ -9,5 +9,5 @@
     <string name="title_people">联系人</string>
     <string name="title_group">群组</string>
     <string name="title_moments">朋友圈</string>
-    <string name="title_activity_chat_item.xml">chat_item.xml</string>
+    <string name="title_activity_people_chat_item.xml">people_chat_item.xml</string>
 </resources>
