@@ -51,8 +51,8 @@ public class PeopleFragment extends Fragment implements PeopleOnItemClickListene
     @Override
     public void onItemClick(ChatItem chatItem) {
         Intent intent = new Intent(requireContext(), PeopleChatActivity.class);
-        intent.putExtra("user_name", chatItem.getUserName());
-        intent.putExtra("message_preview", chatItem.getMessagePreview());
+        intent.putExtra("friend_name", chatItem.getUserName());
+        intent.putExtra("friend_message_preview", chatItem.getMessagePreview());
         startActivity(intent);
     }
 
