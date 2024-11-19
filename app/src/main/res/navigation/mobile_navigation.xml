@@ -3,25 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_people">
+    app:startDestination="@id/navigation_people">
 
     <fragment
         android:id="@+id/navigation_people"
         android:name="com.example.myapp.ui.people.PeopleFragment"
-        android:label="@string/title_people"
-        tools:layout="@layout/fragment_people" />
+        tools:layout="@layout/fragment_people">
+        <action
+            android:id="@+id/action_navigation_people_to_navigation_group"
+            app:destination="@id/navigation_group" />
+        <action
+            android:id="@+id/action_navigation_people_to_chat"
+            app:destination="@id/people_chat_activity" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_group"
         android:name="com.example.myapp.ui.group.GroupFragment"
-        android:label="@string/title_group"
-        tools:layout="@layout/fragment_group" />
+        tools:layout="@layout/fragment_group">
+        <action
+            android:id="@+id/action_navigation_group_to_navigation_moments"
+            app:destination="@id/navigation_moments" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_moments"
         android:name="com.example.myapp.ui.moments.MomentsFragment"
-        android:label="@string/title_moments"
-        tools:layout="@layout/fragment_moments" />
+        tools:layout="@layout/fragment_moments">
+        <action
+            android:id="@+id/action_navigation_moments_to_navigation_people"
+            app:destination="@id/navigation_people" />
+    </fragment>
+
+    <activity
+        android:id="@+id/people_chat_activity"
+        android:name="com.example.myapp.ui.people.PeopleChatActivity"
+        tools:layout="@layout/activity_people_chat" />
 </navigation>
 
 

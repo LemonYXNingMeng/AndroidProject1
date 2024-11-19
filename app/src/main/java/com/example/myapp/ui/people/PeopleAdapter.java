@@ -12,12 +12,14 @@ import com.example.myapp.vo.ChatItem;
 
 import java.util.List;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
+public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ChatViewHolder> {
 
     private List<ChatItem> chatItems;
+    private PeopleOnItemClickListener listener;
 
-    public ChatAdapter(List<ChatItem> chatItems) {
+    public PeopleAdapter(List<ChatItem> chatItems, PeopleOnItemClickListener listener) {
         this.chatItems = chatItems;
+        this.listener = listener;
     }
 
     @NonNull
@@ -32,6 +34,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         ChatItem chatItem = chatItems.get(position);
         holder.userName.setText(chatItem.getUserName());
         holder.messagePreview.setText(chatItem.getMessagePreview());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(chatItem);
+            }
+        });
     }
 
     @Override

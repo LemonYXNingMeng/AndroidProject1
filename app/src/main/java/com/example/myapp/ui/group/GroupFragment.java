@@ -31,7 +31,7 @@ public class GroupFragment extends Fragment {
 
         groupItems = new ArrayList<>();
         groupItems.add(new GroupItem("Alice", "Member of Team A"));
-        groupItems.add(new GroupItem("Bob", "Leader of Team B"));
+        groupItems.add(new GroupItem("Bob1", "Leader of Team B"));
         groupItems.add(new GroupItem("Charlie", "Member of Team C"));
 
         adapter = new GroupAdapter(groupItems);

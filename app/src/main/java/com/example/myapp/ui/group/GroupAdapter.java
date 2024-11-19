@@ -44,8 +44,8 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
         GroupViewHolder(View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.text_view_name);
-            textViewDescription = itemView.findViewById(R.id.text_view_description);
+            textViewName = itemView.findViewById(R.id.group_name);
+            textViewDescription = itemView.findViewById(R.id.group_message_preview);
         }
 
         void bind(GroupItem groupItem) {

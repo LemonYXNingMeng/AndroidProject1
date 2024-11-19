@@ -1,32 +1,29 @@
 package com.example.myapp.ui.people;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.R;
 import com.example.myapp.databinding.FragmentPeopleBinding;
-import com.example.myapp.ui.group.GroupAdapter;
 import com.example.myapp.vo.ChatItem;
-import com.example.myapp.vo.GroupItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PeopleFragment extends Fragment {
+public class PeopleFragment extends Fragment implements PeopleOnItemClickListener {
 
-    private FragmentPeopleBinding binding;
+    //private FragmentPeopleBinding binding;
     private RecyclerView recyclerView;
-    private ChatAdapter adapter;
+    private PeopleAdapter adapter;
     private List<ChatItem> chatItems;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,17 +36,29 @@ public class PeopleFragment extends Fragment {
         chatItems.add(new ChatItem("Alice", "Member of Team A"));
         chatItems.add(new ChatItem("Bob", "Leader of Team B"));
         chatItems.add(new ChatItem("Charlie", "Member of Team C"));
+        chatItems.add(new ChatItem("Alice", "Member of Team A"));
+        chatItems.add(new ChatItem("Bob", "Leader of Team B"));
+        chatItems.add(new ChatItem("Charlie", "Member of Team C"));
+        chatItems.add(new ChatItem("Alice", "Member of Team A"));
+        chatItems.add(new ChatItem("Bob", "Leader of Team B"));
+        chatItems.add(new ChatItem("Charlie", "Member of Team C"));
 
-        adapter = new ChatAdapter(chatItems);
+        adapter = new PeopleAdapter(chatItems, this);
         recyclerView.setAdapter(adapter);
-
         return view;
-        //return inflater.inflate(R.layout.fragment_people, container, false);
+    }
+
+    @Override
+    public void onItemClick(ChatItem chatItem) {
+        Intent intent = new Intent(requireContext(), PeopleChatActivity.class);
+        intent.putExtra("user_name", chatItem.getUserName());
+        intent.putExtra("message_preview", chatItem.getMessagePreview());
+        startActivity(intent);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
+        //binding = null;
     }
 }

@@ -10,23 +10,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.myapp.R;
 import com.example.myapp.databinding.FragmentMomentsBinding;
+import com.example.myapp.ui.group.GroupAdapter;
+import com.example.myapp.vo.GroupItem;
+
+import java.util.ArrayList;
 
 public class MomentsFragment extends Fragment {
 
     private FragmentMomentsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MomentsViewModel momentsViewModel = new ViewModelProvider(this).get(MomentsViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_moments, container, false);
 
-        binding = FragmentMomentsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        /*final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);*/
-        return inflater.inflate(R.layout.fragment_moments, container, false);
+        return view;
     }
 
     @Override
