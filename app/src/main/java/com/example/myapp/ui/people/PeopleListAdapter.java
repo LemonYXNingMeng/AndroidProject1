@@ -12,12 +12,12 @@ import com.example.myapp.vo.ChatItem;
 
 import java.util.List;
 
-public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ChatViewHolder> {
+public class PeopleListAdapter extends RecyclerView.Adapter<PeopleListAdapter.ChatViewHolder> {
 
     private List<ChatItem> chatItems;
     private PeopleOnItemClickListener listener;
 
-    public PeopleAdapter(List<ChatItem> chatItems, PeopleOnItemClickListener listener) {
+    public PeopleListAdapter(List<ChatItem> chatItems, PeopleOnItemClickListener listener) {
         this.chatItems = chatItems;
         this.listener = listener;
     }

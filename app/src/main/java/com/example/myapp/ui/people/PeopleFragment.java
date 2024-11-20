@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.R;
-import com.example.myapp.databinding.FragmentPeopleBinding;
 import com.example.myapp.vo.ChatItem;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class PeopleFragment extends Fragment implements PeopleOnItemClickListene
 
     //private FragmentPeopleBinding binding;
     private RecyclerView recyclerView;
-    private PeopleAdapter adapter;
+    private PeopleListAdapter adapter;
     private List<ChatItem> chatItems;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,7 +42,7 @@ public class PeopleFragment extends Fragment implements PeopleOnItemClickListene
         chatItems.add(new ChatItem("Bob", "Leader of Team B"));
         chatItems.add(new ChatItem("Charlie", "Member of Team C"));
 
-        adapter = new PeopleAdapter(chatItems, this);
+        adapter = new PeopleListAdapter(chatItems, this);
         recyclerView.setAdapter(adapter);
         return view;
     }
