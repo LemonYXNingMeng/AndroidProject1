@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -65,7 +66,9 @@ public class PeopleChatActivity extends AppCompatActivity {
     private void sendMessage() {
         String messageText = binding.messageInput.getText().toString().trim();
         if (!messageText.isEmpty()) {
-            ChatContentItem chatItem = new ChatContentItem(messageText, null, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), true); // true for sent by user
+            ChatContentItem chatItem = new ChatContentItem(messageText, null,
+                    null, true,
+                    null); // true for sent by user
             messages.add(chatItem);
             peopleChatAdapter.notifyDataSetChanged();
             binding.recyclerView.scrollToPosition(messages.size() - 1);
@@ -85,7 +88,10 @@ public class PeopleChatActivity extends AppCompatActivity {
             Uri selectedImageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                ChatContentItem chatItem = new ChatContentItem(null, bitmap, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), true); // true for sent by user
+                //ChatContentItem chatItem = new ChatContentItem(null, bitmap, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), true); // true for sent by user
+                ChatContentItem chatItem = new ChatContentItem(null, bitmap,
+                        null,
+                        true,selectedImageUri);
                 messages.add(chatItem);
                 peopleChatAdapter.notifyDataSetChanged();
                 binding.recyclerView.scrollToPosition(messages.size() - 1);
@@ -109,13 +115,16 @@ public class PeopleChatActivity extends AppCompatActivity {
 
     private void simulateReceivingMessages() {
         // Simulate receiving text message with avatar
-        ChatContentItem receivedMessage = new ChatContentItem("Hello! How are you?", null, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), false); // false for received from other
+        //ChatContentItem receivedMessage = new ChatContentItem("Hello! How are you?", null, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), false); // false for received from other
+        ChatContentItem receivedMessage = new ChatContentItem("Hello! How are you?", null,
+                Uri.parse("file:///android_asset/OIP.jpg"),
+                false,null);
         messages.add(receivedMessage);
 
-        // Simulate receiving image message with avatar
-        // You can replace the URL with a local resource or a network URL
-        // For demonstration, we'll use a placeholder
-        ChatContentItem receivedImage = new ChatContentItem(null, getPlaceholderBitmap(), Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), false); // false for received from other
+        //Bitmap bitmap = BitmapFactory.decodeStream(getClass().getResourceAsStream("file:///android_asset/OIP.jpg"));
+        ChatContentItem receivedImage = new ChatContentItem(null, getPlaceholderBitmap(),
+                Uri.parse("file:///android_asset/OIP.jpg"),
+                false,Uri.parse("file:///android_asset/OIP.jpg"));
         messages.add(receivedImage);
         peopleChatAdapter.notifyDataSetChanged();
     }

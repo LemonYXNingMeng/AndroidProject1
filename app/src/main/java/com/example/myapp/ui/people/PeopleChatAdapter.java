@@ -1,6 +1,7 @@
 package com.example.myapp.ui.people;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.example.myapp.FullScreenImageActivity;
 import com.example.myapp.R;
 import com.example.myapp.vo.ChatContentItem;
 import java.util.List;
@@ -46,7 +48,7 @@ public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.Me
         return messages.size();
     }
 
-    static class MessageViewHolder extends RecyclerView.ViewHolder {
+    class MessageViewHolder extends RecyclerView.ViewHolder {
         private ImageView userAvatar;
         private TextView textView;
         private ImageView imageView;
@@ -58,6 +60,19 @@ public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.Me
             this.textView = itemView.findViewById(R.id.textView);
             this.imageView = itemView.findViewById(R.id.imageView);
             this.container = itemView.findViewById(R.id.container);
+
+            imageView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    ChatContentItem chatItem = messages.get(position);
+                    Uri imageUri = chatItem.getImageUri();
+                    if (imageUri != null) {
+                        Intent intent = new Intent(context, FullScreenImageActivity.class);
+                        intent.putExtra("image_uri", imageUri.toString());
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
 
         void bind(ChatContentItem chatItem) {
@@ -65,6 +80,9 @@ public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.Me
                 textView.setVisibility(View.GONE);
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setImageBitmap(chatItem.getImage());
+                Glide.with(context)
+                        .load(chatItem.getImageUri())
+                        .into(imageView);
             } else {
                 textView.setVisibility(View.VISIBLE);
                 imageView.setVisibility(View.GONE);
@@ -81,44 +99,27 @@ public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.Me
             constraintSet.clone(container);
 
             if (chatItem.isSentByUser()) {
-                // Hide avatar for sent messages
                 userAvatar.setVisibility(View.GONE);
-
-
                 constraintSet.clear(textView.getId(), ConstraintSet.START);
                 constraintSet.connect(textView.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
                 constraintSet.setHorizontalBias(textView.getId(), 1f);
-
-
                 constraintSet.clear(imageView.getId(), ConstraintSet.START);
                 constraintSet.connect(imageView.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
                 constraintSet.setHorizontalBias(imageView.getId(), 1f);
-
-
                 textView.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.bubble_sent));
             } else {
-
                 userAvatar.setVisibility(View.VISIBLE);
-
-
                 constraintSet.clear(userAvatar.getId(), ConstraintSet.END);
                 constraintSet.connect(userAvatar.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
                 constraintSet.setHorizontalBias(userAvatar.getId(), 0f);
-
-
                 constraintSet.clear(textView.getId(), ConstraintSet.END);
                 constraintSet.connect(textView.getId(), ConstraintSet.START, userAvatar.getId(), ConstraintSet.END);
                 constraintSet.setHorizontalBias(textView.getId(), 0f);
-
-
                 constraintSet.clear(imageView.getId(), ConstraintSet.END);
                 constraintSet.connect(imageView.getId(), ConstraintSet.START, userAvatar.getId(), ConstraintSet.END);
                 constraintSet.setHorizontalBias(imageView.getId(), 0f);
-
-
                 textView.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.bubble_received));
             }
-
             constraintSet.applyTo(container);
         }
     }
