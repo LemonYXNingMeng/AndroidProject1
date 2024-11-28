@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.R;
-import com.example.myapp.vo.ChatItem;
+import com.example.myapp.ui.base.ChatItem;
 
 import java.util.ArrayList;
 import java.util.List;

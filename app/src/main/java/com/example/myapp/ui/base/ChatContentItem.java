@@ -1,4 +1,4 @@
-package com.example.myapp.vo;
+package com.example.myapp.ui.base;
 
 import android.graphics.Bitmap;
 import android.net.Uri;

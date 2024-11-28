@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.R;
-import com.example.myapp.vo.ChatItem;
+import com.example.myapp.ui.base.ChatItem;
 
 import java.util.List;
 

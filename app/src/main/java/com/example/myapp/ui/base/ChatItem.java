@@ -1,4 +1,4 @@
-package com.example.myapp.vo;
+package com.example.myapp.ui.base;
 
 public class ChatItem {
     private String userName;

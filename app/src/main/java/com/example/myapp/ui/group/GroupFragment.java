@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.example.myapp.R;
 import com.example.myapp.databinding.FragmentGroupBinding;
-import com.example.myapp.vo.GroupItem;
+import com.example.myapp.ui.base.GroupItem;
 
 public class GroupFragment extends Fragment {
 

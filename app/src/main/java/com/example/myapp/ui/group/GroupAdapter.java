@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapp.R;
-import com.example.myapp.vo.GroupItem;
+import com.example.myapp.ui.base.GroupItem;
 
 import java.util.List;
 

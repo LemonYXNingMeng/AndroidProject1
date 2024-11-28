@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.myapp.R;
 import com.example.myapp.databinding.ActivityPeopleChatBinding;
 import com.example.myapp.ui.base.TitleView;
-import com.example.myapp.vo.ChatContentItem;
+import com.example.myapp.ui.base.ChatContentItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -133,11 +133,14 @@ public class PeopleChatActivity extends AppCompatActivity {
 
         //Bitmap bitmap = BitmapFactory.decodeStream(getClass().getResourceAsStream("file:///android_asset/OIP.jpg"));
         try {
-            //
+            //uri->bitmap
             Bitmap bitmap = BitmapFactory.decodeStream(getAssets().open("OIP.jpg"));
+            //bitmap->uri
+            Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null,null));
+
             ChatContentItem receivedImage = new ChatContentItem(null,bitmap,
                     Uri.parse("file:///android_asset/OIP.jpg"),
-                    false, Uri.parse("file:///android_asset/OIP.jpg"));
+                    false, uri);
             messages.add(receivedImage);
         }catch (IOException e){
             e.printStackTrace();
