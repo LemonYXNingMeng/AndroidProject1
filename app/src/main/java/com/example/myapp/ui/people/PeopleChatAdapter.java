@@ -1,24 +1,39 @@
 package com.example.myapp.ui.people;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.example.myapp.FullScreenImageActivity;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.myapp.R;
 import com.example.myapp.vo.ChatContentItem;
 import java.util.List;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.widget.Toast;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 
 public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.MessageViewHolder> {
 
@@ -60,20 +75,8 @@ public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.Me
             this.textView = itemView.findViewById(R.id.textView);
             this.imageView = itemView.findViewById(R.id.imageView);
             this.container = itemView.findViewById(R.id.container);
-
-            imageView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    ChatContentItem chatItem = messages.get(position);
-                    Uri imageUri = chatItem.getImageUri();
-                    if (imageUri != null) {
-                        Intent intent = new Intent(context, FullScreenImageActivity.class);
-                        intent.putExtra("image_uri", imageUri.toString());
-                        context.startActivity(intent);
-                    }
-                }
-            });
         }
+
 
         void bind(ChatContentItem chatItem) {
             if (chatItem.getImage() != null) {
@@ -83,6 +86,8 @@ public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.Me
                 Glide.with(context)
                         .load(chatItem.getImageUri())
                         .into(imageView);
+                // 保存弹框
+                imageView.setOnClickListener(v -> showPopup(chatItem.getImageUri()));
             } else {
                 textView.setVisibility(View.VISIBLE);
                 imageView.setVisibility(View.GONE);
@@ -121,6 +126,69 @@ public class PeopleChatAdapter extends RecyclerView.Adapter<PeopleChatAdapter.Me
                 textView.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.bubble_received));
             }
             constraintSet.applyTo(container);
+        }
+
+        private void showPopup(Uri imageUri) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_image_view, null);
+
+            ImageView popupImageView = popupView.findViewById(R.id.popupImageView);
+            Button saveButton = popupView.findViewById(R.id.saveButton);
+
+            // Load the image into the popup's ImageView
+            Glide.with(context)
+                    .load(imageUri)
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(popupImageView);
+
+            PopupWindow popupWindow = new PopupWindow(
+                    popupView,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    true);
+
+            // Set a touch listener to dismiss the popup when clicking outside
+            popupView.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                    popupWindow.dismiss();
+                    return true;
+                }
+                return false;
+            });
+
+            saveButton.setOnClickListener(v -> {
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions((AppCompatActivity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PeopleChatActivity.REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION);
+                } else {
+                    saveImage(imageUri);
+                    popupWindow.dismiss();
+                }
+            });
+
+            // Show the popup window centered in the parent view
+            popupWindow.showAtLocation(((AppCompatActivity) context).findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+        }
+
+        private void saveImage(Uri imageUri) {
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+                File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                if (!storageDir.exists()) {
+                    storageDir.mkdirs();
+                }
+                File file = new File(storageDir, System.currentTimeMillis() + ".jpg");
+                try (FileOutputStream out = new FileOutputStream(file)) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
+                    Toast.makeText(context, "图片已保存", Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "保存失败", Toast.LENGTH_SHORT).show();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "无法读取图片", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

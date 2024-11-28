@@ -6,6 +6,7 @@ import android.net.Uri;
 public class ChatContentItem {
     private String text;
     private Bitmap image;
+
     private Uri avatarUri;
     private boolean isSentByUser;
     private Uri imageUri;
