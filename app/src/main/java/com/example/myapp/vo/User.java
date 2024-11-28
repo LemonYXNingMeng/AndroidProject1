@@ -1,17 +1,17 @@
 package com.example.myapp.vo;
 
 public class User {
-    String ID;
+    String userID;
     String name;
     String token;
     String avatarPath;
 
-    public String getID() {
-        return ID;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getToken() {
@@ -43,12 +43,12 @@ public class User {
 
     public User(String name, String ID, String token) {
         this.name = name;
-        this.ID = ID;
+        this.userID = ID;
         this.token = token;
     }
 
     public User(String ID, String name, String token, String avatarPath) {
-        this.ID = ID;
+        this.userID = ID;
         this.name = name;
         this.token = token;
         this.avatarPath = avatarPath;

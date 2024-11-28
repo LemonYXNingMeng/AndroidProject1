@@ -4,22 +4,26 @@ import java.util.Date;
 
 public class ChatMessage {
     String chatMessageID;
-    String senderID; // userID
-    String receiverID; // userID 或 groupID
+    String userID; // userID
+    String friendID;
     String contents;
     String imagePath;
+    boolean is_sent_by_user;
+    boolean isGroup; // 决定friendID 是 userID 还是 groupID
     Date createTime;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String chatMessageID, Date createTime, String imagePath, String contents, String receiverID, String senderID) {
-        this.chatMessageID = chatMessageID;
+    public ChatMessage(Date createTime, boolean isGroup, boolean is_sent_by_user, String imagePath, String contents, String friendID, String userID, String chatMessageID) {
         this.createTime = createTime;
+        this.isGroup = isGroup;
+        this.is_sent_by_user = is_sent_by_user;
         this.imagePath = imagePath;
         this.contents = contents;
-        this.receiverID = receiverID;
-        this.senderID = senderID;
+        this.friendID = friendID;
+        this.userID = userID;
+        this.chatMessageID = chatMessageID;
     }
 
     public String getChatMessageID() {
@@ -30,28 +34,28 @@ public class ChatMessage {
         this.chatMessageID = chatMessageID;
     }
 
-    public String getSenderID() {
-        return senderID;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setSenderID(String senderID) {
-        this.senderID = senderID;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
-    public String getReceiverID() {
-        return receiverID;
+    public boolean isGroup() {
+        return isGroup;
     }
 
-    public void setReceiverID(String receiverID) {
-        this.receiverID = receiverID;
+    public void setGroup(boolean group) {
+        isGroup = group;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public boolean isIs_sent_by_user() {
+        return is_sent_by_user;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setIs_sent_by_user(boolean is_sent_by_user) {
+        this.is_sent_by_user = is_sent_by_user;
     }
 
     public String getContents() {
@@ -62,11 +66,27 @@ public class ChatMessage {
         this.contents = contents;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public String getFriendID() {
+        return friendID;
+    }
+
+    public void setFriendID(String friendID) {
+        this.friendID = friendID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

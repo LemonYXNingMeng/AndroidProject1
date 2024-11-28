@@ -9,23 +9,17 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_USERS = "users";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_USER_ID = "user_id";
-    public static final String COLUMN_FRIEND_ID = "friend_id";
-    public static final String COLUMN_MESSAGE_TEXT = "message_text";
-    public static final String COLUMN_IMAGE_URI = "image_uri";
-    public static final String COLUMN_IS_SENT_BY_USER = "is_sent_by_user";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String COLUMN_USER_ID = "userID";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_TOKEN = "token";
+    public static final String COLUMN_AVATAR_PATH = "avatarPath";
 
     private static final String CREATE_TABLE_CHAT_MESSAGES =
             "CREATE TABLE " + TABLE_USERS  + "(" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_USER_ID + " TEXT NOT NULL, " +
-                    COLUMN_FRIEND_ID + " TEXT NOT NULL, " +
-                    COLUMN_MESSAGE_TEXT + " TEXT, " +
-                    COLUMN_IMAGE_URI + " TEXT, " +
-                    COLUMN_IS_SENT_BY_USER + " BOOLEAN, " +
-                    COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                    COLUMN_USER_ID + " TEXT PRIMARY KEY, " +
+                    COLUMN_NAME + " TEXT NOT NULL, " +
+                    COLUMN_TOKEN + " TEXT, " +
+                    COLUMN_AVATAR_PATH + " TEXT " +
                     ")";
 
     public UserDatabaseHelper(Context context) {

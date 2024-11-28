@@ -3,10 +3,11 @@ package com.example.myapp.vo;
 import java.util.Date;
 
 public class Group {
+    final static int maxLimit = 200;
+
     String groupID;
     String createdByUserID;
     Date createTime;
-    int maxLimit = 200;
     int currentNumber;
 
     public Group() {
@@ -18,11 +19,10 @@ public class Group {
         this.createTime = createTime;
     }
 
-    public Group(String groupID, String createdByUserID, Date createTime, int maxLimit, int currentNumber) {
+    public Group(String groupID, String createdByUserID, Date createTime, int currentNumber) {
         this.groupID = groupID;
         this.createdByUserID = createdByUserID;
         this.createTime = createTime;
-        this.maxLimit = maxLimit;
         this.currentNumber = currentNumber;
     }
 
@@ -50,13 +50,6 @@ public class Group {
         this.createTime = createTime;
     }
 
-    public int getMaxLimit() {
-        return maxLimit;
-    }
-
-    public void setMaxLimit(int maxLimit) {
-        this.maxLimit = maxLimit;
-    }
 
     public int getCurrentNumber() {
         return currentNumber;

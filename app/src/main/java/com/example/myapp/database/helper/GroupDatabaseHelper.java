@@ -9,24 +9,18 @@ public class GroupDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "groups.db";
     private static final int DATABASE_VERSION = 1;
 
-    public static final String TABLE_CHAT_MESSAGES = "chat_messages";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_USER_ID = "user_id";
-    public static final String COLUMN_FRIEND_ID = "friend_id";
-    public static final String COLUMN_MESSAGE_TEXT = "message_text";
-    public static final String COLUMN_IMAGE_URI = "image_uri";
-    public static final String COLUMN_IS_SENT_BY_USER = "is_sent_by_user";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String TABLE_GROUPS = "groups";
+    public static final String COLUMN_GROUP_ID = "groupID";
+    public static final String COLUMN_USER_ID = "createdByUserID";
+    public static final String COLUMN_CREATE_TIME = "createTime";
+    public static final String COLUMN_CURRENT_NUMBER = "currentNumber";
 
     private static final String CREATE_TABLE_CHAT_MESSAGES =
-            "CREATE TABLE " + TABLE_CHAT_MESSAGES + "(" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "CREATE TABLE " + TABLE_GROUPS  + "(" +
+                    COLUMN_GROUP_ID + " TEXT PRIMARY KEY, " +
                     COLUMN_USER_ID + " TEXT NOT NULL, " +
-                    COLUMN_FRIEND_ID + " TEXT NOT NULL, " +
-                    COLUMN_MESSAGE_TEXT + " TEXT, " +
-                    COLUMN_IMAGE_URI + " TEXT, " +
-                    COLUMN_IS_SENT_BY_USER + " BOOLEAN, " +
-                    COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                    COLUMN_CREATE_TIME  + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                    COLUMN_CURRENT_NUMBER + " INTEGER " +
                     ")";
 
     public GroupDatabaseHelper(Context context) {
@@ -40,7 +34,7 @@ public class GroupDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUPS);
         onCreate(db);
     }
 }

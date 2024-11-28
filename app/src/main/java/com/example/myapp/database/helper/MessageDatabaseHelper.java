@@ -9,23 +9,25 @@ public class MessageDatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_CHAT_MESSAGES = "chat_messages";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_USER_ID = "user_id";
-    public static final String COLUMN_FRIEND_ID = "friend_id";
-    public static final String COLUMN_MESSAGE_TEXT = "message_text";
-    public static final String COLUMN_IMAGE_URI = "image_uri";
+    public static final String COLUMN_CHAT_MESSAGE_ID = "chatMessageID";
+    public static final String COLUMN_USER_ID = "userID";
+    public static final String COLUMN_FRIEND_ID = "friendID";
+    public static final String COLUMN_CONTENTS = "contents";
+    public static final String COLUMN_IMAGE_PATH = "imagePath";
     public static final String COLUMN_IS_SENT_BY_USER = "is_sent_by_user";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
+    public static final String COLUMN_IS_GROUP = "isGroup";
+    public static final String COLUMN_CREATE_TIME = "createTime";
 
     private static final String CREATE_TABLE_CHAT_MESSAGES =
             "CREATE TABLE " + TABLE_CHAT_MESSAGES + "(" +
-                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_CHAT_MESSAGE_ID + " TEXT PRIMARY KEY , " +
                     COLUMN_USER_ID + " TEXT NOT NULL, " +
                     COLUMN_FRIEND_ID + " TEXT NOT NULL, " +
-                    COLUMN_MESSAGE_TEXT + " TEXT, " +
-                    COLUMN_IMAGE_URI + " TEXT, " +
-                    COLUMN_IS_SENT_BY_USER + " BOOLEAN, " +
-                    COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
+                    COLUMN_CONTENTS + " TEXT, " +
+                    COLUMN_IMAGE_PATH + " TEXT, " +
+                    COLUMN_IS_SENT_BY_USER + " BOOLEAN DEFAULT FALSE, " +
+                    COLUMN_IS_GROUP + " BOOLEAN DEFAULT FALSE, " +
+                    COLUMN_CREATE_TIME + " DATETIME DEFAULT CURRENT_TIMESTAMP" +
                     ")";
 
     public MessageDatabaseHelper(Context context) {
