@@ -4,7 +4,7 @@ public class User {
     String ID;
     String name;
     String token;
-    String avater;
+    String avatarPath;
 
     public String getID() {
         return ID;
@@ -30,6 +30,14 @@ public class User {
         this.name = name;
     }
 
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
+
     public User() {
     }
 
@@ -37,5 +45,12 @@ public class User {
         this.name = name;
         this.ID = ID;
         this.token = token;
+    }
+
+    public User(String ID, String name, String token, String avatarPath) {
+        this.ID = ID;
+        this.name = name;
+        this.token = token;
+        this.avatarPath = avatarPath;
     }
 }
