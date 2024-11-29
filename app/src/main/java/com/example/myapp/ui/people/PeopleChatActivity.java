@@ -5,20 +5,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.bumptech.glide.Glide;
+
 import com.example.myapp.R;
 import com.example.myapp.databinding.ActivityPeopleChatBinding;
 import com.example.myapp.ui.base.TitleView;
-import com.example.myapp.vo.ChatContentItem;
+import com.example.myapp.ui.base.ChatContentItem;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +29,15 @@ import java.util.List;
 public class PeopleChatActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 100;
     private static final int PERMISSION_REQUEST_CODE = 101;
+    static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION = 102;
+
 
     private ActivityPeopleChatBinding binding;
     private PeopleChatAdapter peopleChatAdapter;
     private List<ChatContentItem> messages;
-    TitleView titleView;
+    //private Uri selectedImageUri;
+    private String userID;
+    private String friendID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +46,20 @@ public class PeopleChatActivity extends AppCompatActivity {
         binding = ActivityPeopleChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize TitleView
+        // 顶部
         Intent intent =getIntent();
         String title = "This is Title";
         if (intent!=null) {
             title = intent.getStringExtra("friend_name");
+            userID = intent.getStringExtra("user_ID");
+            friendID = intent.getStringExtra("friend_ID");
+            /*System.out.println(userID);
+            System.out.println(friendID);*/
         }
+
+
         //intent.putExtra("message_preview", chatItem.getMessagePreview());
-        titleView = (TitleView) findViewById(R.id.title);
+        TitleView titleView = (TitleView) findViewById(R.id.title);
         titleView.setTitleText(title);
 
         messages = new ArrayList<>();
@@ -55,6 +68,7 @@ public class PeopleChatActivity extends AppCompatActivity {
         binding.recyclerView.setAdapter(peopleChatAdapter);
 
         binding.sendButton.setOnClickListener(v -> sendMessage());
+        //binding.imagePickerButton.setOnClickListener(v -> pickImage());
         binding.imagePickerButton.setOnClickListener(v -> pickImage());
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
@@ -65,7 +79,9 @@ public class PeopleChatActivity extends AppCompatActivity {
     private void sendMessage() {
         String messageText = binding.messageInput.getText().toString().trim();
         if (!messageText.isEmpty()) {
-            ChatContentItem chatItem = new ChatContentItem(messageText, null, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), true); // true for sent by user
+            ChatContentItem chatItem = new ChatContentItem(messageText, null,
+                    null, true,
+                    null); // true for sent by user
             messages.add(chatItem);
             peopleChatAdapter.notifyDataSetChanged();
             binding.recyclerView.scrollToPosition(messages.size() - 1);
@@ -85,7 +101,10 @@ public class PeopleChatActivity extends AppCompatActivity {
             Uri selectedImageUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                ChatContentItem chatItem = new ChatContentItem(null, bitmap, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), true); // true for sent by user
+                //ChatContentItem chatItem = new ChatContentItem(null, bitmap, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), true); // true for sent by user
+                ChatContentItem chatItem = new ChatContentItem(null, bitmap,
+                        null,
+                        true,selectedImageUri);
                 messages.add(chatItem);
                 peopleChatAdapter.notifyDataSetChanged();
                 binding.recyclerView.scrollToPosition(messages.size() - 1);
@@ -100,29 +119,46 @@ public class PeopleChatActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted
+                // Permission granted, you can now proceed with picking an image
             } else {
-                // Permission denied
+                Toast.makeText(this, "权限被拒绝", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Handle saving image here if needed
+            } else {
+                Toast.makeText(this, "权限被拒绝", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     private void simulateReceivingMessages() {
-        // Simulate receiving text message with avatar
-        ChatContentItem receivedMessage = new ChatContentItem("Hello! How are you?", null, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), false); // false for received from other
+        //ChatContentItem receivedMessage = new ChatContentItem("Hello! How are you?", null, Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), false); // false for received from other
+        ChatContentItem receivedMessage = new ChatContentItem("Hello! How are you?", null,
+                Uri.parse("file:///android_asset/OIP.jpg"),
+                false,null);
         messages.add(receivedMessage);
 
-        // Simulate receiving image message with avatar
-        // You can replace the URL with a local resource or a network URL
-        // For demonstration, we'll use a placeholder
-        ChatContentItem receivedImage = new ChatContentItem(null, getPlaceholderBitmap(), Uri.parse("https://img.alicdn.com/tfs/TB1GjUJrVzqK1RjSZPcXXbOqpXa-112-112.png"), false); // false for received from other
-        messages.add(receivedImage);
-        peopleChatAdapter.notifyDataSetChanged();
-    }
+        //Bitmap bitmap = BitmapFactory.decodeStream(getClass().getResourceAsStream("file:///android_asset/OIP.jpg"));
+        /*try {
+            //uri->bitmap
+            Bitmap bitmap = BitmapFactory.decodeStream(getAssets().open("OIP.jpg"));
+            //bitmap->uri
+            Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null,null));
 
-    private Bitmap getPlaceholderBitmap() {
-        // Create a simple placeholder bitmap
-        return Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+            ChatContentItem receivedImage = new ChatContentItem(null,bitmap,
+                    Uri.parse("file:///android_asset/OIP.jpg"),
+                    false, uri);
+            messages.add(receivedImage);
+        }catch (IOException e){
+            e.printStackTrace();
+            //System.out.println("失败");
+        }*/
+
+        messages.add(new ChatContentItem("Hello!", null, null, false, null));
+        messages.add(new ChatContentItem("Hi there!", null, null, true, null));
+        messages.add(new ChatContentItem("How are you?", null, null, false, null));
+        peopleChatAdapter.notifyDataSetChanged();
     }
 
 

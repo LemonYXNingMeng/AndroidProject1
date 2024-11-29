@@ -27,16 +27,11 @@ public class TitleView extends FrameLayout{
             }
         });
     }
-    /**
-     * 设置标题
-     * @param text
-     */
+
     public void setTitleText(String text) {
         titleText.setText(text);
     }
-    /**
-     * 隐藏返回按钮
-     */
+
     public void hideBackImage(){
         back.setVisibility(View.GONE);
     }
