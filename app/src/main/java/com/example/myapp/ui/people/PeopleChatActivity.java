@@ -44,7 +44,7 @@ public class PeopleChatActivity extends AppCompatActivity {
         binding = ActivityPeopleChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Initialize TitleView
+        // 顶部
         Intent intent =getIntent();
         String title = "This is Title";
         if (intent!=null) {
@@ -132,7 +132,7 @@ public class PeopleChatActivity extends AppCompatActivity {
         messages.add(receivedMessage);
 
         //Bitmap bitmap = BitmapFactory.decodeStream(getClass().getResourceAsStream("file:///android_asset/OIP.jpg"));
-        try {
+        /*try {
             //uri->bitmap
             Bitmap bitmap = BitmapFactory.decodeStream(getAssets().open("OIP.jpg"));
             //bitmap->uri
@@ -145,7 +145,7 @@ public class PeopleChatActivity extends AppCompatActivity {
         }catch (IOException e){
             e.printStackTrace();
             //System.out.println("失败");
-        }
+        }*/
 
         messages.add(new ChatContentItem("Hello!", null, null, false, null));
         messages.add(new ChatContentItem("Hi there!", null, null, true, null));

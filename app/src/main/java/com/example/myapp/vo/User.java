@@ -2,9 +2,21 @@ package com.example.myapp.vo;
 
 public class User {
     String userID;
+    String phone;
     String name;
     String token;
     String avatarPath;
+
+    public User() {
+    }
+
+    public User(String userID, String phone, String name, String token, String avatarPath) {
+        this.userID = userID;
+        this.phone = phone;
+        this.name = name;
+        this.token = token;
+        this.avatarPath = avatarPath;
+    }
 
     public String getUserID() {
         return userID;
@@ -12,6 +24,14 @@ public class User {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getToken() {
@@ -35,22 +55,6 @@ public class User {
     }
 
     public void setAvatarPath(String avatarPath) {
-        this.avatarPath = avatarPath;
-    }
-
-    public User() {
-    }
-
-    public User(String name, String ID, String token) {
-        this.name = name;
-        this.userID = ID;
-        this.token = token;
-    }
-
-    public User(String ID, String name, String token, String avatarPath) {
-        this.userID = ID;
-        this.name = name;
-        this.token = token;
         this.avatarPath = avatarPath;
     }
 }
