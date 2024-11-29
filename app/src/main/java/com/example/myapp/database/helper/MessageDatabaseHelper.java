@@ -1,6 +1,8 @@
 package com.example.myapp.database.helper;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 public class MessageDatabaseHelper extends SQLiteOpenHelper {
@@ -43,5 +45,27 @@ public class MessageDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAT_MESSAGES);
         onCreate(db);
+    }
+
+    public boolean insertMessage(String chatMessageID, String userID, String friendID, String contents, String imagePath, boolean isSentByUser, boolean isGroup) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CHAT_MESSAGE_ID, chatMessageID);
+        values.put(COLUMN_USER_ID, userID);
+        values.put(COLUMN_FRIEND_ID, friendID);
+        values.put(COLUMN_CONTENTS, contents);
+        values.put(COLUMN_IMAGE_PATH, imagePath);
+        values.put(COLUMN_IS_SENT_BY_USER, isSentByUser ? 1 : 0); // Store boolean as integer
+        values.put(COLUMN_IS_GROUP, isGroup ? 1 : 0); // Store boolean as integer
+
+        long result = db.insert(TABLE_CHAT_MESSAGES, null, values);
+        return result != -1;
+    }
+
+
+
+    public Cursor getAllMessages() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_CHAT_MESSAGES, null, null, null, null, null, COLUMN_CREATE_TIME + " ASC");
     }
 }

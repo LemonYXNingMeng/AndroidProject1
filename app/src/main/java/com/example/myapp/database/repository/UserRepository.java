@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.myapp.database.helper.MessageDatabaseHelper;
 import com.example.myapp.database.helper.UserDatabaseHelper;
+import com.example.myapp.ui.base.ChatItem;
 import com.example.myapp.vo.User;
 
 import java.util.ArrayList;
@@ -82,5 +85,39 @@ public class UserRepository {
         String userToken = password.length() + password;
         return user != null && userToken.equals(user.getToken()) ? user : null; // 登录成功返回
     }
+
+    public ArrayList<ChatItem> getAllUsers(String userID) {
+        ArrayList<ChatItem> userList = new ArrayList<>();
+        Cursor cursor = dbHelper.getAllUsers();
+        if (cursor.moveToFirst()) {
+            do {
+                String friendID = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_USER_ID));
+                if(friendID.equals(userID)) continue;
+                // 需建立Relation,
+                String friendName = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_NAME));
+                String messagePreview = "Hello!"; // 获取最新消息,MessageRepository
+                userList.add(new ChatItem(friendID,friendName,messagePreview));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return userList;
+    }
+
+    public ArrayList<ChatItem> getAllUsers() {
+        ArrayList<ChatItem> userList = new ArrayList<>();
+        Cursor cursor = dbHelper.getAllUsers();
+        if (cursor.moveToFirst()) {
+            do {
+                String friendID = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_USER_ID));
+                String friendName = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_NAME));
+                String messagePreview = "Hello!"; // 获取最
+                userList.add(new ChatItem(friendID,friendName,messagePreview));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return userList;
+    }
+
+
 
 }

@@ -30,7 +30,6 @@
             android:exported="true"
             android:label="@string/title_activity_menu" />
         <activity android:name=".ui.people.PeopleChatActivity"/>
-        <activity android:name=".FullScreenImageActivity"/>
     </application>
 
 </manifest>

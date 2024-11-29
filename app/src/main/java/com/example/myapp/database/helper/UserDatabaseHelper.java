@@ -104,4 +104,9 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public Cursor getAllUsers() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(TABLE_USERS, null, null, null, null, null, COLUMN_USER_ID+ " ASC");
+    }
+
 }

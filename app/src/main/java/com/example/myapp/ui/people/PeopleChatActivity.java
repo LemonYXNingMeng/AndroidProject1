@@ -36,6 +36,8 @@ public class PeopleChatActivity extends AppCompatActivity {
     private PeopleChatAdapter peopleChatAdapter;
     private List<ChatContentItem> messages;
     //private Uri selectedImageUri;
+    private String userID;
+    private String friendID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,13 @@ public class PeopleChatActivity extends AppCompatActivity {
         String title = "This is Title";
         if (intent!=null) {
             title = intent.getStringExtra("friend_name");
+            userID = intent.getStringExtra("user_ID");
+            friendID = intent.getStringExtra("friend_ID");
+            /*System.out.println(userID);
+            System.out.println(friendID);*/
         }
+
+
         //intent.putExtra("message_preview", chatItem.getMessagePreview());
         TitleView titleView = (TitleView) findViewById(R.id.title);
         titleView.setTitleText(title);

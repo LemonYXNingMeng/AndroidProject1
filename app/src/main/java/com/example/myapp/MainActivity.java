@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!name.isEmpty() && !password.isEmpty()) {
                     // 注册服务
-                    String userID = userRepository.registerUser(phone,name,password,selectedAvatarUri.getPath());
+                    String userID = userRepository.registerUser(phone,name,password,selectedAvatarUri.toString());
                     Toast.makeText(MainActivity.this, "注册成功,您的账号为" + userID, Toast.LENGTH_SHORT).show();
                     alertDialog.dismiss();
                 } else {
