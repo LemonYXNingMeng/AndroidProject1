@@ -74,6 +74,7 @@ public class MenuActivity extends AppCompatActivity {
             Uri uri = Uri.parse(userAvatarPath);
             Glide.with(this).load(uri).into(userAvatar);
         }
+
     }
 
 }

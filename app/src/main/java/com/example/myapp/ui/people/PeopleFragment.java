@@ -46,7 +46,7 @@ public class PeopleFragment extends Fragment implements PeopleOnItemClickListene
             Log.d("PeopleFragment", "Received Data: UserID=" + userID);
 
             chatItems = userRepository.getAllUsers(userID);
-            adapter = new PeopleListAdapter(chatItems, this);
+            adapter = new PeopleListAdapter(getContext(),chatItems, this);
             recyclerView.setAdapter(adapter);
         });
 
@@ -84,7 +84,7 @@ public class PeopleFragment extends Fragment implements PeopleOnItemClickListene
         chatItems.add(new ChatItem("Alice", "Member of Team A"));
         chatItems.add(new ChatItem("Bob", "Leader of Team B"));
         chatItems.add(new ChatItem("Charlie", "Member of Team C"));*/
-        adapter = new PeopleListAdapter(chatItems, this);
+        adapter = new PeopleListAdapter(getContext(),chatItems, this);
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -95,6 +95,7 @@ public class PeopleFragment extends Fragment implements PeopleOnItemClickListene
         intent.putExtra("user_ID",userID);
         intent.putExtra("friend_ID",chatItem.getUserID());
         intent.putExtra("friend_name", chatItem.getUserName());
+        intent.putExtra("friend_avatar_path", chatItem.getAvatarPath());
         //intent.putExtra("friend_message_preview", chatItem.getMessagePreview());
         startActivity(intent);
     }

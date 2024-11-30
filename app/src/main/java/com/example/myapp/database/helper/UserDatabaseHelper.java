@@ -60,6 +60,23 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         );
     }
 
+    public Cursor getAvatarPathByFriendID(String userID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {COLUMN_USER_ID, COLUMN_PHONE, COLUMN_NAME, COLUMN_TOKEN, COLUMN_AVATAR_PATH};
+        String selection = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {userID};
+
+        return db.query(
+                TABLE_USERS,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+    }
+
     public Cursor getUserByPhone(String phone) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] projection = {COLUMN_USER_ID, COLUMN_PHONE, COLUMN_NAME, COLUMN_TOKEN, COLUMN_AVATAR_PATH};

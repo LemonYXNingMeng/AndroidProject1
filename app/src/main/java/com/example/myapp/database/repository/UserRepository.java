@@ -68,6 +68,18 @@ public class UserRepository {
         return null;
     }
 
+    public String getAvatarPathByFriendID(String userID) {
+        //SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = dbHelper.getAvatarPathByFriendID(userID);
+        if (cursor.moveToFirst()) {
+            String avatarPath = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_AVATAR_PATH));
+            cursor.close();
+            return avatarPath;
+        }
+        cursor.close();
+        return null;
+    }
+
     // 模拟服务器生成用户ID
     public String registerUser(String phone,String name, String password,String avatarPath){
         return dbHelper.insertUser(phone,name,password,avatarPath);
@@ -96,7 +108,8 @@ public class UserRepository {
                 // 需建立Relation,
                 String friendName = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_NAME));
                 String messagePreview = "Hello!"; // 获取最新消息,MessageRepository
-                userList.add(new ChatItem(friendID,friendName,messagePreview));
+                String friendAvatar = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_AVATAR_PATH));
+                userList.add(new ChatItem(friendID,friendName,messagePreview,friendAvatar));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -110,8 +123,9 @@ public class UserRepository {
             do {
                 String friendID = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_USER_ID));
                 String friendName = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_NAME));
-                String messagePreview = "Hello!"; // 获取最
-                userList.add(new ChatItem(friendID,friendName,messagePreview));
+                String friendAvatar = cursor.getString(cursor.getColumnIndexOrThrow(UserDatabaseHelper.COLUMN_AVATAR_PATH));
+                String messagePreview = "Hello!"; // 获取最新消息,MessageRepository
+                userList.add(new ChatItem(friendID,friendName,messagePreview,friendAvatar));
             } while (cursor.moveToNext());
         }
         cursor.close();
