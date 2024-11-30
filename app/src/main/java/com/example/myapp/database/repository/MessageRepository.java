@@ -3,6 +3,7 @@ package com.example.myapp.database.repository;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -10,7 +11,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.example.myapp.database.helper.MessageDatabaseHelper;
+import com.example.myapp.ui.base.ChatContentItem;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -23,8 +26,8 @@ public class MessageRepository {
         this.dbHelper = new MessageDatabaseHelper(context);
     }
 
-    public boolean insertMessage(String chatMessageID, String userID, String friendID, String contents, String imagePath, boolean isSentByUser, boolean isGroup) {
-        return dbHelper.insertMessage(chatMessageID, userID, friendID, contents, imagePath, isSentByUser, isGroup);
+    public boolean insertMessage(String userID, String friendID, String contents, String imagePath,boolean isGroup) {
+        return dbHelper.insertMessage(userID, friendID, contents, imagePath, isGroup);
     }
 
     public ArrayList<String> getAllMessages() {
@@ -38,11 +41,10 @@ public class MessageRepository {
                 String friendID = cursor.getString(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_FRIEND_ID));
                 String contents = cursor.getString(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_CONTENTS));
                 String imagePath = cursor.getString(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_IMAGE_PATH));
-                int isSentByUserInt = cursor.getInt(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_IS_SENT_BY_USER));
                 int isGroupInt = cursor.getInt(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_IS_GROUP));
                 String createTime = cursor.getString(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_CREATE_TIME));
 
-                boolean isSentByUser = isSentByUserInt == 1;
+                boolean isSentByUser = false;
                 boolean isGroup = isGroupInt == 1;
 
                 // Format the message as you need
@@ -62,7 +64,36 @@ public class MessageRepository {
         return messageList;
     }
 
-    public Uri saveImageToExternalStorage(Bitmap bitmap) {
+    public ArrayList<ChatContentItem> getChatContentItemsByFriendID(String userID,String friendAvatarPath,String friendID) {
+        ArrayList<ChatContentItem> chatContentItems = new ArrayList<>();
+        Cursor cursor = dbHelper.getMessagesByFriendID(userID,friendID);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String message_userID = cursor.getString(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_USER_ID));
+
+                String contents = cursor.getString(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_CONTENTS));
+                String imageUriStr = cursor.getString(cursor.getColumnIndexOrThrow(MessageDatabaseHelper.COLUMN_IMAGE_PATH));
+
+                boolean isSentByUser = userID.equals(message_userID);
+                ChatContentItem item;
+                Uri avatarUri = null;
+                if(!isSentByUser) avatarUri = Uri.parse(friendAvatarPath);
+                if(contents==null || contents.isEmpty()) {
+                    Uri imageUri = imageUriStr != null ? Uri.parse(imageUriStr) : null;
+                    Bitmap image = loadImageFromPath(imageUriStr);
+                    item = new ChatContentItem(contents, image, imageUri, avatarUri, isSentByUser);
+                }else {
+                    item = new ChatContentItem(contents, null, null, avatarUri, isSentByUser);
+                }
+                chatContentItems.add(item);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return chatContentItems;
+    }
+
+    /*public Uri saveImageToExternalStorage(Bitmap bitmap) {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.DISPLAY_NAME, "sample.jpg");
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
@@ -77,12 +108,25 @@ public class MessageRepository {
             }
         }
         return null;
-    }
+    }*/
 
     public Bitmap createSampleBitmap() {
         // Create a sample bitmap for demonstration purposes
         Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
         // You can draw on the bitmap here if needed
         return bitmap;
+    }
+
+    private Bitmap loadImageFromPath(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return null;
+        }
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(Uri.parse(imagePath));
+            return BitmapFactory.decodeStream(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

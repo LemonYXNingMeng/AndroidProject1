@@ -6,29 +6,32 @@ import android.net.Uri;
 public class ChatContentItem {
     private String text;
     private Bitmap image;
-
+    private Uri imageUri;
     private Uri avatarUri;
     private boolean isSentByUser;
-    private Uri imageUri;
 
-    public ChatContentItem(String text, Bitmap image, Uri avatarUri, boolean isSentByUser,Uri imageUri) {
+    public ChatContentItem(String text, Bitmap image, Uri imageUri, Uri avatarUri, boolean isSentByUser) {
         this.text = text;
         this.image = image;
+        this.imageUri = imageUri;
         this.avatarUri = avatarUri;
         this.isSentByUser = isSentByUser;
-        this.imageUri = imageUri;
+    }
+
+    public String getText() {
+        return text;
     }
 
     public void setText(String text) {
         this.text = text;
     }
 
-    public void setSentByUser(boolean sentByUser) {
-        isSentByUser = sentByUser;
+    public Bitmap getImage() {
+        return image;
     }
 
-    public void setAvatarUri(Uri avatarUri) {
-        this.avatarUri = avatarUri;
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 
     public Uri getImageUri() {
@@ -39,23 +42,19 @@ public class ChatContentItem {
         this.imageUri = imageUri;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
     public Uri getAvatarUri() {
         return avatarUri;
     }
 
+    public void setAvatarUri(Uri avatarUri) {
+        this.avatarUri = avatarUri;
+    }
+
     public boolean isSentByUser() {
         return isSentByUser;
+    }
+
+    public void setSentByUser(boolean sentByUser) {
+        isSentByUser = sentByUser;
     }
 }
